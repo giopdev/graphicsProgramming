@@ -17,3 +17,7 @@ main.bin
 # ignore strace output files
 # Usage: strace -o strace_filename ./binary
 strace*
+
+.cache
+
+*.idx
