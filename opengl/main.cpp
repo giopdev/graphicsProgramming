@@ -171,12 +171,12 @@ int main() {
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
-    // glfwPollEvents();
+    glfwPollEvents();
     //  Swap the new frame in
     glfwSwapBuffers(window);
   }
 
-  //  glfwTerminate();
+  glfwTerminate();
   return 0;
 }
 
