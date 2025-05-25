@@ -7,7 +7,7 @@
 // #define WIREFRAME_MODE
 
 // TODO:
-// Read shader code from file
+// Maybe read shader code from file
 const char *vertexShaderSource =
     "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
@@ -171,12 +171,12 @@ int main() {
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
-    glfwPollEvents();
-    // Swap the new frame in
+    // glfwPollEvents();
+    //  Swap the new frame in
     glfwSwapBuffers(window);
   }
 
-  glfwTerminate();
+  //  glfwTerminate();
   return 0;
 }
 
