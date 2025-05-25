@@ -18,6 +18,6 @@ main.bin
 # Usage: strace -o strace_filename ./binary
 strace*
 
+# clangd lsp stuff
 .cache
-
 *.idx
