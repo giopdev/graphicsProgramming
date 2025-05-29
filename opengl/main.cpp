@@ -110,7 +110,6 @@ int main() {
       -0.5f, 0.5f,  0.0f  // top left
   };
   unsigned int indices[] = {
-      // note that we start from 0!
       0, 1, 3, // first triangle
       1, 2, 3  // second triangle
   };
@@ -153,7 +152,7 @@ int main() {
    *///////////////////////////////////////////////
   while (!glfwWindowShouldClose(window)) {
     // Check for input
-    processInput(window);
+    // processInput(window);
 
     /*
      * Render BG color
