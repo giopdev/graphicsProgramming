@@ -8,6 +8,8 @@
 #include <vulkan/vulkan_core.h>
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+#include <chrono>
+#include <sstream>
 
 #include <cstdlib>
 #include <cstring>
@@ -118,6 +120,12 @@ private:
   uint32_t currentFrame = 0;
 
   bool framebufferResized = false;
+
+  // Timing variables for FPS and frametime
+  std::chrono::time_point<std::chrono::high_resolution_clock> lastTime;
+  int frameCount = 0;
+  double totalFrameTime = 0.0;
+  uint64_t totalFrames = 0;
 
   void initWindow() {
     glfwInit();
@@ -644,11 +652,48 @@ private:
   }
 
   void mainLoop() {
+    lastTime = std::chrono::high_resolution_clock::now();
+    frameCount = 0;
+
     while (!glfwWindowShouldClose(window)) {
       glfwPollEvents();
-      drawFrame();
+
+      auto frameStart = std::chrono::high_resolution_clock::now();
+      // drawFrame();
+      auto frameEnd = std::chrono::high_resolution_clock::now();
+
+      float frameTimeMs =
+          std::chrono::duration<float, std::milli>(frameEnd - frameStart)
+              .count();
+
+      // Accumulate for averages
+      totalFrameTime += frameTimeMs;
+      totalFrames++;
+
+      frameCount++;
+      float elapsed = std::chrono::duration<float>(frameEnd - lastTime).count();
+      if (elapsed >= 1.0f) {
+        float fps = frameCount / elapsed;
+        float msPerFrame = 1000.0f / fps;
+
+        std::ostringstream title;
+        title << "Vulkan - " << fps << " FPS, " << msPerFrame << " ms/frame";
+        glfwSetWindowTitle(window, title.str().c_str());
+
+        frameCount = 0;
+        lastTime = frameEnd;
+      }
     }
     vkDeviceWaitIdle(device);
+
+    // Print averages
+    if (totalFrames > 0) {
+      double avgFrameTime = totalFrameTime / totalFrames;
+      double avgFPS = 1000.0 / avgFrameTime;
+      std::cout << "==== AVERAGE PERFORMANCE ====" << std::endl;
+      std::cout << "Average FPS: " << avgFPS << std::endl;
+      std::cout << "Average ms/frame: " << avgFrameTime << std::endl;
+    }
   }
 
   void cleanup() {
