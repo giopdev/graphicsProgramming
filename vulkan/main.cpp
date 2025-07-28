@@ -10,6 +10,7 @@
 #include <GLFW/glfw3.h>
 #include <chrono>
 #include <sstream>
+#include <unistd.h>
 
 #include <cstdlib>
 #include <cstring>
@@ -19,6 +20,9 @@
 #include <set>
 #include <stdexcept>
 #include <vector>
+
+// For manually stepping :(
+char c;
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
@@ -30,6 +34,8 @@ const std::vector<const char *> validationLayers = {
 
 const std::vector<const char *> deviceExtensions = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+
+#define NDEBUG
 
 #ifdef NDEBUG
 const bool enableValidationLayers = false;
@@ -80,6 +86,8 @@ public:
   void run() {
     initWindow();
     initVulkan();
+    std::cout << "Press <enter> to continue with mainLoop..." << std::endl;
+    scanf("%c", &c);
     mainLoop();
     cleanup();
   }
@@ -121,7 +129,7 @@ private:
 
   bool framebufferResized = false;
 
-  // Timing variables for FPS and frametime
+  // FPS and frametime stuff
   std::chrono::time_point<std::chrono::high_resolution_clock> lastTime;
   int frameCount = 0;
   double totalFrameTime = 0.0;
@@ -146,17 +154,29 @@ private:
 
   void initVulkan() {
     createInstance();
+
     setupDebugMessenger();
+
     createSurface();
+
     pickPhysicalDevice();
+
     createLogicalDevice();
+
     createSwapChain();
+
     createImageViews();
+
     createRenderPass();
+
     createGraphicsPipeline();
+
     createFramebuffers();
+
     createCommandPool();
+
     createCommandBuffers();
+
     createSyncObjects();
   }
 
@@ -656,10 +676,12 @@ private:
     frameCount = 0;
 
     while (!glfwWindowShouldClose(window)) {
+      std::cout << "Press <enter> to loop again..." << std::endl;
+      scanf("%c", &c);
       glfwPollEvents();
 
       auto frameStart = std::chrono::high_resolution_clock::now();
-      // drawFrame();
+      drawFrame();
       auto frameEnd = std::chrono::high_resolution_clock::now();
 
       float frameTimeMs =
@@ -727,6 +749,7 @@ private:
   }
 
   void createInstance() {
+
     if (enableValidationLayers && !checkValidationLayerSupport()) {
       throw std::runtime_error(
           "validation layers requested, but not available!");
@@ -758,7 +781,6 @@ private:
       createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT *)&debugCreateInfo;
     } else {
       createInfo.enabledLayerCount = 0;
-
       createInfo.pNext = nullptr;
     }
 
@@ -766,7 +788,6 @@ private:
       throw std::runtime_error("failed to create instance!");
     }
   }
-
   void populateDebugMessengerCreateInfo(
       VkDebugUtilsMessengerCreateInfoEXT &createInfo) {
     createInfo = {};
@@ -825,6 +846,7 @@ private:
   }
 
   void createLogicalDevice() {
+
     QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
 
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
@@ -870,6 +892,7 @@ private:
     }
 
     vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
+
     vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &presentQueue);
   }
 
@@ -1102,6 +1125,9 @@ private:
 };
 
 int main() {
+  std::cout << "Press <enter> to execute tri..." << std::endl;
+  scanf("%c", &c);
+
   HelloTriangleApplication app;
 
   try {

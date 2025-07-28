@@ -13,6 +13,13 @@ CMakeUserPresets.json
 
 # ignore executables
 main.bin
+tri
+server
+load_game
+server-loader
+
+#ignore .so
+*.so
 
 # ignore strace output files
 # Usage: strace -o strace_filename ./binary
