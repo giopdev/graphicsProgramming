@@ -13,6 +13,6 @@ To run:
 - Press ```<enter>``` in terminal ***Monitor***
     - **You should see a prompt to enter a loop**, *wait here in this terminal*.
 - Press ```<enter>``` in terminal ***Tri***
-    - This step should take quite a while, you'll know ***it's ready when you see a prompt to enter a loop*
+    - This step should take quite a while, you'll know ***it's ready when you see a prompt to enter a loop***
 - When ***Tri*** is ready to enter a loop, press ```<enter``` on ***Monitor***
 - You may now repeatedly press ```<enter>``` on ***Tri*** to run the next iteration of the render loop
